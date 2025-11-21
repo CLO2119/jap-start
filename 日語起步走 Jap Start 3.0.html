@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<title>日語起步走 Jap Start 3.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+:root {
+--bg: #f5f7fb;
+--primary: #ff6b6b;
+--primary-dark: #e05656;
+--accent: #4dabf7;
+--text-main: #222;
+--text-sub: #555;
+--card-bg: #ffffff;
+--border: #dde2f0;
+--radius: 12px;
+--shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+sans-serif;
+background: radial-gradient(circle at top left, #ffe6e6, #f5f7fb 40%, #e3f2ff);
+color: var(--text-main);
+}
+
+.app-shell {
+max-width: 1100px;
+margin: 0 auto;
+padding: 16px 16px 40px;
+}
+
+header {
+text-align: center;
+margin-bottom: 18px;
+}
+
+header h1 {
+font-size: 2rem;
+margin: 6px 0;
+}
+
+header h1 span {
+font-size: 1rem;
+font-weight: 500;
+color: var(--primary);
+margin-left: 6px;
+}
+
+header p {
+margin: 4px 0;
+color: var(--text-sub);
+font-size: 0.95rem;
+}
+
+.tagline {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 4px 10px;
+border-radius: 999px;
+background: rgba(255, 255, 255, 0.8);
+border: 1px solid rgba(255, 107, 107, 0.15);
+font-size: 0.8rem;
+color: var(--primary-dark);
+margin-bottom: 4px;
+}
+
+.layout {
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+
+@media (min-width: 768px) {
+.layout {
+flex-direction: row;
+align-items: flex-start;
+}
+}
+
+.panel {
+background: var(--card-bg);
+border-radius: var(--radius);
+box-shadow: var(--shadow);
+padding: 16px;
+border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.panel-main {
+flex: 3;
+min-width: 0;
+}
+
+.panel-quiz {
+flex: 2;
+min-width: 0;
+}
+
+.tabs {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-bottom: 10px;
+}
+
+.tab-btn {
+flex: 1 1 120px;
+border-radius: 999px;
+border: 1px solid var(--border);
+padding: 6px 10px;
+background: #f8fafc;
+font-size: 0.9rem;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+transition: background 0.15s, color 0.15s, border-color 0.15s,
+transform 0.05s;
+white-space: nowrap;
+}
+
+.tab-btn span.en {
+font-size: 0.7rem;
+color: var(--text-sub);
+}
+
+.tab-btn.active {
+background: linear-gradient(135deg, #ff6b6b, #ffa94d);
+color: white;
+border-color: transparent;
+transform: translateY(-1px);
+}
+
+.tab-btn.active span.en {
+color: rgba(255, 255, 255, 0.9);
+}
+
+.list-header {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+margin-bottom: 6px;
+}
+
+.list-header h2 {
+font-size: 1rem;
+margin: 0;
+}
+
+.list-header small {
+color: var(--text-sub);
+font-size: 0.8rem;
+}
+
+.entry-list {
+max-height: 360px;
+overflow-y: auto;
+padding-right: 4px;
+border-top: 1px solid var(--border);
+margin-top: 8px;
+}
+
+.entry {
+display: grid;
+grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, 1.3fr) auto auto;
+gap: 6px;
+padding: 8px 0;
+border-bottom: 1px dashed #e2e8f0;
+align-items: center;
+font-size: 0.9rem;
+}
+
+.entry-main {
+font-weight: 600;
+font-size: 1rem;
+}
+
+.entry span.sub {
+color: var(--text-sub);
+font-size: 0.8rem;
+}
+
+.speak-btn,
+.fav-btn {
+border-radius: 999px;
+border: none;
+padding: 4px 10px;
+font-size: 0.8rem;
+cursor: pointer;
+background: #e7f5ff;
+display: inline-flex;
+align-items: center;
+gap: 4px;
+transition: background 0.15s, transform 0.05s;
+white-space: nowrap;
+}
+
+.speak-btn:hover,
+.fav-btn:hover {
+background: #d0ebff;
+transform: translateY(-1px);
+}
+
+.fav-btn.favorited {
+background: #fff3bf;
+}
+
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 4px;
+padding: 2px 8px;
+border-radius: 999px;
+background: #f1f5f9;
+color: #64748b;
+font-size: 0.75rem;
+}
+
+.support-warning {
+margin-top: 6px;
+font-size: 0.8rem;
+color: #b91c1c;
+}
+
+.empty-hint {
+padding: 10px 4px;
+font-size: 0.85rem;
+color: #64748b;
+}
+
+/* Quiz panel */
+.panel-quiz h2 {
+font-size: 1rem;
+margin-top: 0;
+margin-bottom: 6px;
+}
+
+.quiz-controls {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 10px;
+align-items: center;
+}
+
+.quiz-select {
+flex: 1 1 120px;
+padding: 6px 8px;
+border-radius: 999px;
+border: 1px solid var(--border);
+background: #f8fafc;
+font-size: 0.85rem;
+}
+
+.quiz-mode-toggle {
+display: flex;
+gap: 6px;
+flex: 1 1 100%;
+}
+
+.pill-btn {
+flex: 1;
+padding: 6px 8px;
+border-radius: 999px;
+border: 1px solid var(--border);
+background: #f8fafc;
+font-size: 0.8rem;
+cursor: pointer;
+transition: background 0.15s, border-color 0.15s;
+}
+
+.pill-btn.active {
+background: rgba(77, 171, 247, 0.1);
+border-color: var(--accent);
+color: #1d4ed8;
+}
+
+.btn-primary {
+border-radius: 999px;
+border: none;
+padding: 8px 14px;
+background: var(--primary);
+color: white;
+font-size: 0.9rem;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+transition: background 0.15s, transform 0.05s, box-shadow 0.1s;
+box-shadow: 0 4px 10px rgba(248, 113, 113, 0.4);
+margin-left: auto;
+}
+
+.btn-primary:hover {
+background: var(--primary-dark);
+transform: translateY(-1px);
+box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
+}
+
+.btn-primary:active {
+transform: translateY(0);
+box-shadow: 0 3px 8px rgba(248, 113, 113, 0.3);
+}
+
+.quiz-card {
+margin-top: 8px;
+border-radius: 10px;
+border: 1px solid var(--border);
+padding: 10px;
+background: #f8fafc;
+font-size: 0.95rem;
+}
+
+.quiz-meta {
+display: flex;
+justify-content: space-between;
+font-size: 0.8rem;
+color: var(--text-sub);
+margin-bottom: 6px;
+flex-wrap: wrap;
+gap: 4px;
+}
+
+.quiz-question-label {
+font-size: 0.8rem;
+text-transform: uppercase;
+letter-spacing: 0.05em;
+color: #64748b;
+margin-bottom: 4px;
+}
+
+.quiz-question-main {
+font-size: 1.05rem;
+font-weight: 600;
+margin-bottom: 6px;
+}
+
+.progress-wrap {
+margin-bottom: 6px;
+}
+
+.progress-text {
+font-size: 0.75rem;
+color: #64748b;
+margin-bottom: 2px;
+display: flex;
+justify-content: space-between;
+}
+
+.progress-bar {
+width: 100%;
+height: 6px;
+border-radius: 999px;
+background: #e2e8f0;
+overflow: hidden;
+}
+
+.progress-inner {
+height: 100%;
+width: 0%;
+border-radius: inherit;
+background: linear-gradient(90deg, #4dabf7, #ff6b6b);
+transition: width 0.2s ease-out;
+}
+
+.quiz-options {
+display: grid;
+grid-template-columns: 1fr;
+gap: 6px;
+margin-top: 4px;
+}
+
+@media (min-width: 480px) {
+.quiz-options {
+grid-template-columns: 1fr 1fr;
+}
+}
+
+.quiz-option {
+border-radius: 999px;
+padding: 6px 10px;
+border: 1px solid var(--border);
+background: white;
+font-size: 0.9rem;
+cursor: pointer;
+text-align: left;
+transition: background 0.15s, border-color 0.15s, transform 0.05s;
+}
+
+.quiz-option:hover {
+background: #eef2ff;
+border-color: #c7d2fe;
+transform: translateY(-1px);
+}
+
+.quiz-option.correct {
+background: #dcfce7;
+border-color: #22c55e;
+}
+
+.quiz-option.incorrect {
+background: #fee2e2;
+border-color: #ef4444;
+}
+
+.quiz-feedback {
+margin-top: 6px;
+font-size: 0.85rem;
+}
+
+.quiz-feedback.correct {
+color: #15803d;
+}
+
+.quiz-feedback.incorrect {
+color: #b91c1c;
+}
+
+footer {
+text-align: center;
+margin-top: 10px;
+font-size: 0.75rem;
+color: #64748b;
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<header>
+<div class="tagline">🎧 視覺 + 聽覺 · 加上收藏與錯題本，打造你的日語起步走</div>
+<h1>日語起步走 <span>Jap Start 3.0</span></h1>
+<p>點一點、聽一聽、測一測，用最直覺的方式記住日文發音與意思。</p>
+<p>建議使用支援 Web Speech API 的手機或 Chrome 瀏覽器。</p>
+</header>
+
+<div class="layout">
+<!-- 左側：單字學習 -->
+<section class="panel panel-main">
+<div class="list-header">
+<h2>學習單元</h2>
+<small>點擊 🔊 收聽真人語音合成，可加到「收藏」與「錯題本」</small>
+</div>
+
+<div class="tabs" id="unit-tabs">
+<button class="tab-btn active" data-unit="Hirakana">
+平假名 <span class="en">Hiragana</span>
+</button>
+<button class="tab-btn" data-unit="Katakana">
+片假名 <span class="en">Katakana</span>
+</button>
+<button class="tab-btn" data-unit="numbers">
+數字 1–10 <span class="en">Numbers</span>
+</button>
+<button class="tab-btn" data-unit="phrases">
+生活會話 <span class="en">Phrases</span>
+</button>
+<button class="tab-btn" data-unit="time">
+時間 <span class="en">Time</span>
+</button>
+<button class="tab-btn" data-unit="weekdays">
+星期 <span class="en">Weekdays</span>
+</button>
+<button class="tab-btn" data-unit="dates">
+日期 <span class="en">Dates</span>
+</button>
+<button class="tab-btn" data-unit="colors">
+顏色 <span class="en">Colors</span>
+</button>
+<button class="tab-btn" data-unit="favorites">
+⭐ 收藏單字
+</button>
+<button class="tab-btn" data-unit="wrongbook">
+❌ 錯題本
+</button>
+</div>
+
+<div class="badge">
+💡 提示：日文（漢字＋平假名／片假名）＋ 羅馬音 ＋ 中文，一次記三種資訊
+</div>
+
+<div class="entry-list" id="entry-list"></div>
+
+<div id="unit-actions" style="margin-top:10px; display:none;">
+<button id="clear-fav" class="fav-btn">🗑 清空收藏</button>
+<button id="clear-wrongbook" class="fav-btn" style="margin-left:6px;">🗑 清空錯題本</button>
+</div>
+
+<div id="speech-warning" class="support-warning" style="display:none;">
+⚠️ 你的瀏覽器似乎不支援 Web Speech API。請改用最新版 Chrome 或支援語音合成的裝置。
+</div>
+</section>
+
+<!-- 右側：測驗模式 -->
+<section class="panel panel-quiz">
+<h2>測驗模式 · 即時計分</h2>
+<div class="quiz-controls">
+<select id="quiz-unit" class="quiz-select">
+<option value="Hirakana">平假名</option>
+<option value="Katakana">片假名</option>
+<option value="numbers">數字 1–10</option>
+<option value="phrases">生活會話</option>
+<option value="time">時間</option>
+<option value="weekdays">星期</option>
+<option value="dates">日期</option>
+<option value="colors">顏色</option>
+<option value="favorites">⭐ 收藏單字</option>
+<option value="wrongbook">❌ 錯題本</option>
+<option value="all">全部單元</option>
+</select>
+
+<div class="quiz-mode-toggle">
+<button class="pill-btn active" data-mode="listening">
+🎧 聽力測驗
+</button>
+<button class="pill-btn" data-mode="meaning">
+📝 單字測驗
+</button>
+<button class="pill-btn" data-mode="kana">
+あ↔ア 互轉
+</button>
+</div>
+
+<label style="font-size:0.8rem; display:flex; align-items:center; gap:4px; margin-top:4px;">
+<input type="checkbox" id="auto-next" />
+連續練習模式（自動下一題）
+</label>
+
+<button id="start-quiz" class="btn-primary">
+▶️ 開始 / 下一題
+</button>
+</div>
+
+<div class="quiz-card" id="quiz-card" style="display:none;">
+<div class="quiz-meta">
+<span>題數：<span id="quiz-count">0</span></span>
+<span>分數：<span id="quiz-score">0</span></span>
+</div>
+
+<div class="progress-wrap">
+<div class="progress-text">
+<span>今日目標：10 題</span>
+<span><span id="progress-current">0</span> / 10</span>
+</div>
+<div class="progress-bar">
+<div class="progress-inner" id="progress-inner"></div>
+</div>
+</div>
+
+<div class="quiz-question-label" id="quiz-label"></div>
+<div class="quiz-question-main" id="quiz-question"></div>
+
+<div id="quiz-play-audio" style="margin-top:4px; display:none;">
+<button class="speak-btn" id="quiz-speak-btn">
+🔊 播放題目
+</button>
+</div>
+
+<div class="quiz-options" id="quiz-options"></div>
+
+<div id="quiz-feedback" class="quiz-feedback"></div>
+</div>
+</section>
+</div>
+
+<footer>
+Jap Start 3.0 · 日語起步走 · 可依需要擴充更多單元、進度紀錄與帳號系統。
+</footer>
+</div>
+
+<script>
+console.log('Jap Start JS loaded');
+window.addEventListener('DOMContentLoaded', function () {
+// ====== 資料定義（加入 jp_kanji：漢字（かな）顯示用） ======
+const DATA = {
+Hirakana: [
+{ jp: "あ", romaji: "a", zh: "平假名 a", row: "あ行" },
+{ jp: "い", romaji: "i", zh: "平假名 i", row: "あ行" },
+{ jp: "う", romaji: "u", zh: "平假名 u", row: "あ行" },
+{ jp: "え", romaji: "e", zh: "平假名 e", row: "あ行" },
+{ jp: "お", romaji: "o", zh: "平假名 o", row: "あ行" },
+
+{ jp: "か", romaji: "ka", zh: "平假名 ka", row: "か行" },
+{ jp: "き", romaji: "ki", zh: "平假名 ki", row: "か行" },
+{ jp: "く", romaji: "ku", zh: "平假名 ku", row: "か行" },
+{ jp: "け", romaji: "ke", zh: "平假名 ke", row: "か行" },
+{ jp: "こ", romaji: "ko", zh: "平假名 ko", row: "か行" },
+
+{ jp: "さ", romaji: "sa", zh: "平假名 sa", row: "さ行" },
+{ jp: "し", romaji: "shi", zh: "平假名 shi", row: "さ行" },
+{ jp: "す", romaji: "su", zh: "平假名 su", row: "さ行" },
+{ jp: "せ", romaji: "se", zh: "平假名 se", row: "さ行" },
+{ jp: "そ", romaji: "so", zh: "平假名 so", row: "さ行" },
+
+{ jp: "た", romaji: "ta", zh: "平假名 ta", row: "た行" },
+{ jp: "ち", romaji: "chi", zh: "平假名 chi", row: "た行" },
+{ jp: "つ", romaji: "tsu", zh: "平假名 tsu", row: "た行" },
+{ jp: "て", romaji: "te", zh: "平假名 te", row: "た行" },
+{ jp: "と", romaji: "to", zh: "平假名 to", row: "た行" },
+
+{ jp: "な", romaji: "na", zh: "平假名 na", row: "な行" },
+{ jp: "に", romaji: "ni", zh: "平假名 ni", row: "な行" },
+{ jp: "ぬ", romaji: "nu", zh: "平假名 nu", row: "な行" },
+{ jp: "ね", romaji: "ne", zh: "平假名 ne", row: "な行" },
+{ jp: "の", romaji: "no", zh: "平假名 no", row: "な行" },
+
+{ jp: "は", romaji: "ha", zh: "平假名 ha", row: "は行" },
+{ jp: "ひ", romaji: "hi", zh: "平假名 hi", row: "は行" },
+{ jp: "ふ", romaji: "fu", zh: "平假名 fu", row: "は行" },
+{ jp: "へ", romaji: "he", zh: "平假名 he", row: "は行" },
+{ jp: "ほ", romaji: "ho", zh: "平假名 ho", row: "は行" },
+
+{ jp: "ま", romaji: "ma", zh: "平假名 ma", row: "ま行" },
+{ jp: "み", romaji: "mi", zh: "平假名 mi", row: "ま行" },
+{ jp: "む", romaji: "mu", zh: "平假名 mu", row: "ま行" },
+{ jp: "め", romaji: "me", zh: "平假名 me", row: "ま行" },
+{ jp: "も", romaji: "mo", zh: "平假名 mo", row: "ま行" },
+
+{ jp: "や", romaji: "ya", zh: "平假名 ya", row: "や行" },
+{ jp: "ゆ", romaji: "yu", zh: "平假名 yu", row: "や行" },
+{ jp: "よ", romaji: "yo", zh: "平假名 yo", row: "や行" },
+
+{ jp: "ら", romaji: "ra", zh: "平假名 ra", row: "ら行" },
+{ jp: "り", romaji: "ri", zh: "平假名 ri", row: "ら行" },
+{ jp: "る", romaji: "ru", zh: "平假名 ru", row: "ら行" },
+{ jp: "れ", romaji: "re", zh: "平假名 re", row: "ら行" },
+{ jp: "ろ", romaji: "ro", zh: "平假名 ro", row: "ら行" },
+
+{ jp: "わ", romaji: "wa", zh: "平假名 wa", row: "わ行" },
+{ jp: "を", romaji: "o / wo", zh: "平假名 o / wo", row: "わ行" },
+{ jp: "ん", romaji: "n", zh: "平假名 n", row: "ん" }
+],
+
+Katakana: [
+{ jp: "ア", romaji: "a", zh: "片假名 a", row: "ア行" },
+{ jp: "イ", romaji: "i", zh: "片假名 i", row: "ア行" },
+{ jp: "ウ", romaji: "u", zh: "片假名 u", row: "ア行" },
+{ jp: "エ", romaji: "e", zh: "片假名 e", row: "ア行" },
+{ jp: "オ", romaji: "o", zh: "片假名 o", row: "ア行" },
+
+{ jp: "カ", romaji: "ka", zh: "片假名 ka", row: "カ行" },
+{ jp: "キ", romaji: "ki", zh: "片假名 ki", row: "カ行" },
+{ jp: "ク", romaji: "ku", zh: "片假名 ku", row: "カ行" },
+{ jp: "ケ", romaji: "ke", zh: "片假名 ke", row: "カ行" },
+{ jp: "コ", romaji: "ko", zh: "片假名 ko", row: "カ行" },
+
+{ jp: "サ", romaji: "sa", zh: "片假名 sa", row: "サ行" },
+{ jp: "シ", romaji: "shi", zh: "片假名 shi", row: "サ行" },
+{ jp: "ス", romaji: "su", zh: "片假名 su", row: "サ行" },
+{ jp: "セ", romaji: "se", zh: "片假名 se", row: "サ行" },
+{ jp: "ソ", romaji: "so", zh: "片假名 so", row: "サ行" },
+
+{ jp: "タ", romaji: "ta", zh: "片假名 ta", row: "タ行" },
+{ jp: "チ", romaji: "chi", zh: "片假名 chi", row: "タ行" },
+{ jp: "ツ", romaji: "tsu", zh: "片假名 tsu", row: "タ行" },
+{ jp: "テ", romaji: "te", zh: "片假名 te", row: "タ行" },
+{ jp: "ト", romaji: "to", zh: "片假名 to", row: "タ行" },
+
+{ jp: "ナ", romaji: "na", zh: "片假名 na", row: "ナ行" },
+{ jp: "ニ", romaji: "ni", zh: "片假名 ni", row: "ナ行" },
+{ jp: "ヌ", romaji: "nu", zh: "片假名 nu", row: "ナ行" },
+{ jp: "ネ", romaji: "ne", zh: "片假名 ne", row: "ナ行" },
+{ jp: "ノ", romaji: "no", zh: "片假名 no", row: "ナ行" },
+
+{ jp: "ハ", romaji: "ha", zh: "片假名 ha", row: "ハ行" },
+{ jp: "ヒ", romaji: "hi", zh: "片假名 hi", row: "ハ行" },
+{ jp: "フ", romaji: "fu", zh: "片假名 fu", row: "ハ行" },
+{ jp: "ヘ", romaji: "he", zh: "片假名 he", row: "ハ行" },
+{ jp: "ホ", romaji: "ho", zh: "片假名 ho", row: "ハ行" },
+
+{ jp: "マ", romaji: "ma", zh: "片假名 ma", row: "マ行" },
+{ jp: "ミ", romaji: "mi", zh: "片假名 mi", row: "マ行" },
+{ jp: "ム", romaji: "mu", zh: "片假名 mu", row: "マ行" },
+{ jp: "メ", romaji: "me", zh: "片假名 me", row: "マ行" },
+{ jp: "モ", romaji: "mo", zh: "片假名 mo", row: "マ行" },
+
+{ jp: "ヤ", romaji: "ya", zh: "片假名 ya", row: "ヤ行" },
+{ jp: "ユ", romaji: "yu", zh: "片假名 yu", row: "ヤ行" },
+{ jp: "ヨ", romaji: "yo", zh: "片假名 yo", row: "ヤ行" },
+
+{ jp: "ラ", romaji: "ra", zh: "片假名 ra", row: "ラ行" },
+{ jp: "リ", romaji: "ri", zh: "片假名 ri", row: "ラ行" },
+{ jp: "ル", romaji: "ru", zh: "片假名 ru", row: "ラ行" },
+{ jp: "レ", romaji: "re", zh: "片假名 re", row: "ラ行" },
+{ jp: "ロ", romaji: "ro", zh: "片假名 ro", row: "ラ行" },
+
+{ jp: "ワ", romaji: "wa", zh: "片假名 wa", row: "ワ行" },
+{ jp: "ヲ", romaji: "o / wo", zh: "片假名 o / wo", row: "ワ行" },
+{ jp: "ン", romaji: "n", zh: "片假名 n", row: "ン" }
+],
+
+numbers: [
+{ jp: "いち", romaji: "ichi", zh: "一（1）", jp_kanji: "一（いち）" },
+{ jp: "に", romaji: "ni", zh: "二（2）", jp_kanji: "二（に）" },
+{ jp: "さん", romaji: "san", zh: "三（3）", jp_kanji: "三（さん）" },
+{ jp: "よん / し", romaji: "yon / shi", zh: "四（4）", jp_kanji: "四（よん／し）" },
+{ jp: "ご", romaji: "go", zh: "五（5）", jp_kanji: "五（ご）" },
+{ jp: "ろく", romaji: "roku", zh: "六（6）", jp_kanji: "六（ろく）" },
+{ jp: "なな / しち", romaji: "nana / shichi", zh: "七（7）", jp_kanji: "七（なな／しち）" },
+{ jp: "はち", romaji: "hachi", zh: "八（8）", jp_kanji: "八（はち）" },
+{ jp: "きゅう / く", romaji: "kyuu / ku", zh: "九（9）", jp_kanji: "九（きゅう／く）" },
+{ jp: "じゅう", romaji: "juu", zh: "十（10）", jp_kanji: "十（じゅう）" }
+],
+
+phrases: [
+{ jp: "こんにちは", romaji: "konnichiwa", zh: "你好／午安", jp_kanji: "今日は（こんにちは）" },
+{ jp: "おはようございます", romaji: "ohayou gozaimasu", zh: "早安（敬語）", jp_kanji: "お早うございます（おはようございます）" },
+{ jp: "こんばんは", romaji: "konbanwa", zh: "晚安（打招呼）", jp_kanji: "今晩は（こんばんは）" },
+{ jp: "ありがとうございます", romaji: "arigatou gozaimasu", zh: "非常感謝", jp_kanji: "有難うございます（ありがとうございます）" },
+{ jp: "すみません", romaji: "sumimasen", zh: "不好意思／對不起", jp_kanji: "済みません（すみません）" },
+{ jp: "はい", romaji: "hai", zh: "是／好" },
+{ jp: "いいえ", romaji: "iie", zh: "不是／不" },
+{ jp: "お願いします", romaji: "onegaishimasu", zh: "拜託了／麻煩你", jp_kanji: "お願いします（おねがいします）" },
+{ jp: "大丈夫です", romaji: "daijoubu desu", zh: "沒問題／我沒事", jp_kanji: "大丈夫です（だいじょうぶです）" },
+{ jp: "どこですか？", romaji: "doko desu ka?", zh: "在哪裡？", jp_kanji: "どこですか？" }
+],
+
+time: [
+{ jp: "いま", romaji: "ima", zh: "現在", jp_kanji: "今（いま）" },
+{ jp: "○じ", romaji: "○ ji", zh: "～點（整點）", jp_kanji: "～時（～じ）" },
+{ jp: "ごぜん", romaji: "gozen", zh: "上午", jp_kanji: "午前（ごぜん）" },
+{ jp: "ごご", romaji: "gogo", zh: "下午", jp_kanji: "午後（ごご）" },
+{ jp: "なんじですか？", romaji: "nanji desu ka?", zh: "現在幾點？", jp_kanji: "何時ですか？（なんじですか？）" },
+{ jp: "○じはん", romaji: "○ ji han", zh: "～點半", jp_kanji: "～時半（～じはん）" },
+{ jp: "いちじ", romaji: "ichiji", zh: "一點", jp_kanji: "一時（いちじ）" },
+{ jp: "にじ", romaji: "niji", zh: "兩點", jp_kanji: "二時（にじ）" },
+{ jp: "さんじ", romaji: "sanji", zh: "三點", jp_kanji: "三時（さんじ）" },
+{ jp: "しちじ", romaji: "shichiji", zh: "七點", jp_kanji: "七時（しちじ）" }
+],
+
+weekdays: [
+{ jp: "げつようび", romaji: "getsuyoubi", zh: "星期一", jp_kanji: "月曜日（げつようび）" },
+{ jp: "かようび", romaji: "kayoubi", zh: "星期二", jp_kanji: "火曜日（かようび）" },
+{ jp: "すいようび", romaji: "suiyoubi", zh: "星期三", jp_kanji: "水曜日（すいようび）" },
+{ jp: "もくようび", romaji: "mokuyoubi", zh: "星期四", jp_kanji: "木曜日（もくようび）" },
+{ jp: "きんようび", romaji: "kinyoubi", zh: "星期五", jp_kanji: "金曜日（きんようび）" },
+{ jp: "どようび", romaji: "doyoubi", zh: "星期六", jp_kanji: "土曜日（どようび）" },
+{ jp: "にちようび", romaji: "nichiyoubi", zh: "星期日", jp_kanji: "日曜日（にちようび）" },
+{ jp: "きょう", romaji: "kyou", zh: "今天", jp_kanji: "今日（きょう）" },
+{ jp: "あした", romaji: "ashita", zh: "明天", jp_kanji: "明日（あした）" },
+{ jp: "きのう", romaji: "kinou", zh: "昨天", jp_kanji: "昨日（きのう）" }
+],
+
+dates: [
+{ jp: "きょう", romaji: "kyou", zh: "今天", jp_kanji: "今日（きょう）" },
+{ jp: "あした", romaji: "ashita", zh: "明天", jp_kanji: "明日（あした）" },
+{ jp: "きのう", romaji: "kinou", zh: "昨天", jp_kanji: "昨日（きのう）" },
+{ jp: "あさって", romaji: "asatte", zh: "後天", jp_kanji: "明後日（あさって）" },
+{ jp: "おととい", romaji: "ototoi", zh: "前天", jp_kanji: "一昨日（おととい）" },
+{ jp: "らいしゅう", romaji: "raishuu", zh: "下週", jp_kanji: "来週（らいしゅう）" },
+{ jp: "せんしゅう", romaji: "senshuu", zh: "上週", jp_kanji: "先週（せんしゅう）" },
+{ jp: "こんしゅう", romaji: "konshuu", zh: "本週", jp_kanji: "今週（こんしゅう）" },
+{ jp: "らいげつ", romaji: "raigetsu", zh: "下個月", jp_kanji: "来月（らいげつ）" },
+{ jp: "せんげつ", romaji: "sengetsu", zh: "上個月", jp_kanji: "先月（せんげつ）" }
+],
+
+colors: [
+{ jp: "あか", romaji: "aka", zh: "紅色", jp_kanji: "赤（あか）" },
+{ jp: "あお", romaji: "ao", zh: "藍色／青色", jp_kanji: "青（あお）" },
+{ jp: "きいろ", romaji: "kiiro", zh: "黃色", jp_kanji: "黄色（きいろ）" },
+{ jp: "しろ", romaji: "shiro", zh: "白色", jp_kanji: "白（しろ）" },
+{ jp: "くろ", romaji: "kuro", zh: "黑色", jp_kanji: "黒（くろ）" },
+{ jp: "みどり", romaji: "midori", zh: "綠色", jp_kanji: "緑（みどり）" },
+{ jp: "ピンク", romaji: "pinku", zh: "粉紅色", jp_kanji: "ピンク" },
+{ jp: "むらさき", romaji: "murasaki", zh: "紫色", jp_kanji: "紫（むらさき）" },
+{ jp: "ちゃいろ", romaji: "chairo", zh: "咖啡色／茶色", jp_kanji: "茶色（ちゃいろ）" },
+{ jp: "オレンジ", romaji: "orenji", zh: "橙色", jp_kanji: "オレンジ" }
+]
+};
+
+// ====== 收藏 / 錯題本 ======
+let favorites = [];
+let wrongBook = [];
+const FAVORITES_KEY = "japStartFavorites";
+const WRONGBOOK_KEY = "japStartWrongBook";
+
+function loadFromStorage() {
+try {
+const favRaw = localStorage.getItem(FAVORITES_KEY);
+const wrongRaw = localStorage.getItem(WRONGBOOK_KEY);
+favorites = favRaw ? JSON.parse(favRaw) : [];
+wrongBook = wrongRaw ? JSON.parse(wrongRaw) : [];
+} catch (e) {
+favorites = [];
+wrongBook = [];
+}
+}
+function saveFavorites() {
+try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); } catch (e) {}
+}
+function saveWrongBook() {
+try { localStorage.setItem(WRONGBOOK_KEY, JSON.stringify(wrongBook)); } catch (e) {}
+}
+function sameItem(a, b) {
+return a.jp === b.jp && a.romaji === b.romaji && a.zh === b.zh;
+}
+function isFavorited(item) {
+return favorites.some((f) => sameItem(f, item));
+}
+function addToFavorites(item) {
+if (!isFavorited(item)) {
+favorites.push(item);
+saveFavorites();
+}
+}
+function removeFromFavorites(item) {
+favorites = favorites.filter((f) => !sameItem(f, item));
+saveFavorites();
+}
+function toggleFavorite(item) {
+if (isFavorited(item)) {
+removeFromFavorites(item);
+} else {
+addToFavorites(item);
+}
+}
+function addToWrongBook(item) {
+if (!wrongBook.some((f) => sameItem(f, item))) {
+wrongBook.push(item);
+saveWrongBook();
+}
+}
+function removeFromWrongBook(item) {
+wrongBook = wrongBook.filter((f) => !sameItem(f, item));
+saveWrongBook();
+}
+
+loadFromStorage();
+
+// ====== 語音合成 ======
+const speechSupported = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+const speechWarningEl = document.getElementById("speech-warning");
+if (!speechSupported) {
+speechWarningEl.style.display = "block";
+}
+function speakJapanese(text) {
+if (!speechSupported) return;
+window.speechSynthesis.cancel();
+const utter = new SpeechSynthesisUtterance(text);
+utter.lang = "ja-JP";
+utter.rate = 1.0;
+utter.pitch = 1.0;
+window.speechSynthesis.speak(utter);
+}
+
+// ====== 左側渲染 ======
+const entryListEl = document.getElementById("entry-list");
+const tabButtons = document.querySelectorAll(".tab-btn");
+const unitActions = document.getElementById("unit-actions");
+const clearFavBtn = document.getElementById("clear-fav");
+const clearWrongBtn = document.getElementById("clear-wrongbook");
+let currentUnit = "Hirakana";
+
+function getItemsForUnit(unitKey) {
+if (unitKey === "favorites") return favorites;
+if (unitKey === "wrongbook") return wrongBook;
+return DATA[unitKey] || [];
+}
+
+function updateActionButtons() {
+if (currentUnit === "favorites" || currentUnit === "wrongbook") {
+unitActions.style.display = "block";
+} else {
+unitActions.style.display = "none";
+}
+}
+
+function renderUnit(unitKey) {
+entryListEl.innerHTML = "";
+const items = getItemsForUnit(unitKey);
+
+if (!items.length) {
+const hint = document.createElement("div");
+hint.className = "empty-hint";
+if (unitKey === "favorites") {
+hint.textContent = "⭐ 目前還沒有收藏單字，請在左側單元中按「收藏」加入。";
+} else if (unitKey === "wrongbook") {
+hint.textContent = "❌ 還沒有錯題紀錄，測驗答錯的題目會自動加入這裡。";
+} else {
+hint.textContent = "此單元尚無資料。";
+}
+entryListEl.appendChild(hint);
+updateActionButtons();
+return;
+}
+
+items.forEach((item) => {
+const row = document.createElement("div");
+row.className = "entry";
+
+const colJP = document.createElement("div");
+colJP.className = "entry-main";
+const jpDisplay = item.jp_kanji || item.jp;
+colJP.textContent = jpDisplay;
+
+const colRomaji = document.createElement("div");
+colRomaji.innerHTML = `<span class="sub">${item.romaji}</span>`;
+
+const colZH = document.createElement("div");
+colZH.innerHTML = `<span class="sub">${item.zh}</span>`;
+
+const colBtnSpeak = document.createElement("div");
+const speakBtn = document.createElement("button");
+speakBtn.className = "speak-btn";
+speakBtn.textContent = "🔊 朗讀";
+speakBtn.addEventListener("click", () => speakJapanese(item.jp));
+colBtnSpeak.appendChild(speakBtn);
+
+const colBtnFav = document.createElement("div");
+const favBtn = document.createElement("button");
+favBtn.className = "fav-btn";
+if (isFavorited(item)) {
+favBtn.classList.add("favorited");
+favBtn.textContent = "★ 已收藏";
+} else {
+favBtn.textContent = "☆ 收藏";
+}
+favBtn.addEventListener("click", () => {
+toggleFavorite(item);
+renderUnit(currentUnit);
+});
+colBtnFav.appendChild(favBtn);
+
+row.appendChild(colJP);
+row.appendChild(colRomaji);
+row.appendChild(colZH);
+row.appendChild(colBtnSpeak);
+row.appendChild(colBtnFav);
+
+entryListEl.appendChild(row);
+});
+
+updateActionButtons();
+}
+
+tabButtons.forEach((btn) => {
+btn.addEventListener("click", () => {
+tabButtons.forEach((b) => b.classList.remove("active"));
+btn.classList.add("active");
+currentUnit = btn.dataset.unit;
+renderUnit(currentUnit);
+});
+});
+
+// 清空收藏
+clearFavBtn.addEventListener("click", () => {
+if (confirm("確定要清空所有收藏單字嗎？")) {
+favorites = [];
+saveFavorites();
+if (currentUnit === "favorites") renderUnit("favorites");
+alert("收藏已清空！");
+}
+});
+
+// 清空錯題本
+clearWrongBtn.addEventListener("click", () => {
+if (confirm("確定要清空所有錯題紀錄嗎？")) {
+wrongBook = [];
+saveWrongBook();
+if (currentUnit === "wrongbook") renderUnit("wrongbook");
+alert("錯題本已清空！");
+}
+});
+
+renderUnit(currentUnit);
+
+// ====== 測驗模式 ======
+const quizUnitSelect = document.getElementById("quiz-unit");
+const quizModeButtons = document.querySelectorAll(".pill-btn");
+const startQuizBtn = document.getElementById("start-quiz");
+const autoNextCheckbox = document.getElementById("auto-next");
+
+const quizCard = document.getElementById("quiz-card");
+const quizLabel = document.getElementById("quiz-label");
+const quizQuestion = document.getElementById("quiz-question");
+const quizOptionsEl = document.getElementById("quiz-options");
+const quizCountEl = document.getElementById("quiz-count");
+const quizScoreEl = document.getElementById("quiz-score");
+const quizFeedbackEl = document.getElementById("quiz-feedback");
+const quizPlayAudioWrap = document.getElementById("quiz-play-audio");
+const quizSpeakBtn = document.getElementById("quiz-speak-btn");
+const progressInner = document.getElementById("progress-inner");
+const progressCurrentEl = document.getElementById("progress-current");
+
+const QUIZ_GOAL = 10;
+let quizMode = "listening";
+let quizCount = 0;
+let quizScore = 0;
+let currentAnswerIndex = -1;
+let currentQuestionItem = null;
+
+quizModeButtons.forEach((btn) => {
+btn.addEventListener("click", () => {
+quizModeButtons.forEach((b) => b.classList.remove("active"));
+btn.classList.add("active");
+quizMode = btn.dataset.mode;
+});
+});
+
+function getPool(unitKey) {
+if (unitKey === "all") {
+return [
+...DATA.Hirakana,
+...DATA.Katakana,
+...DATA.numbers,
+...DATA.phrases,
+...DATA.time,
+...DATA.weekdays,
+...DATA.dates,
+...DATA.colors
+];
+}
+if (unitKey === "favorites") return favorites;
+if (unitKey === "wrongbook") return wrongBook;
+return DATA[unitKey] || [];
+}
+
+function shuffle(array) {
+const arr = array.slice();
+for (let i = arr.length - 1; i > 0; i--) {
+const j = Math.floor(Math.random() * (i + 1));
+[arr[i], arr[j]] = [arr[j], arr[i]];
+}
+return arr;
+}
+
+function updateProgress() {
+const current = Math.min(quizCount, QUIZ_GOAL);
+const percent = (current / QUIZ_GOAL) * 100;
+progressCurrentEl.textContent = current;
+progressInner.style.width = percent + "%";
+}
+
+// 平假名／片假名互轉題
+function generateKanaQuestion() {
+const unit = quizUnitSelect.value;
+const hiraList = DATA.Hirakana;
+const kataList = DATA.Katakana;
+
+let direction = "hira-to-kata";
+if (unit === "Katakana") {
+direction = "kata-to-hira";
+} else if (unit === "all") {
+direction = Math.random() < 0.5 ? "hira-to-kata" : "kata-to-hira";
+} else if (unit !== "Hirakana") {
+alert("あ↔ア 互轉測驗只適用於：平假名、片假名或全部單元。");
+return;
+}
+
+const questionList = direction === "hira-to-kata" ? hiraList : kataList;
+const answerList = direction === "hira-to-kata" ? kataList : hiraList;
+if (!questionList.length || !answerList.length) {
+alert("資料不足，無法進行互轉測驗。");
+return;
+}
+
+quizCard.style.display = "block";
+quizFeedbackEl.textContent = "";
+quizFeedbackEl.className = "quiz-feedback";
+quizOptionsEl.innerHTML = "";
+
+const qItem = questionList[Math.floor(Math.random() * questionList.length)];
+const correctAnswer = answerList.find((x) => x.romaji === qItem.romaji);
+if (!correctAnswer) {
+console.warn("找不到對應的互轉答案：", qItem);
+return;
+}
+
+const distractorCandidates = answerList.filter((x) => x.jp !== correctAnswer.jp);
+const distractors = shuffle(distractorCandidates).slice(0, 3);
+const options = shuffle([correctAnswer, ...distractors]);
+
+currentQuestionItem = correctAnswer;
+currentAnswerIndex = options.findIndex((o) => o.jp === correctAnswer.jp);
+
+quizCount++;
+quizCountEl.textContent = quizCount;
+updateProgress();
+
+quizLabel.textContent =
+direction === "hira-to-kata"
+? "かな互轉：請選出對應的片假名"
+: "かな互轉：請選出對應的平假名";
+
+const rowHint = qItem.row ? `（${qItem.row}）` : "";
+quizQuestion.textContent = `題目：${qItem.jp} ${rowHint}`;
+quizPlayAudioWrap.style.display = "block";
+quizSpeakBtn.onclick = () => speakJapanese(qItem.jp);
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+btn.textContent = item.jp;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+
+speakJapanese(qItem.jp);
+}
+
+function generateQuestion() {
+if (quizMode === "kana") {
+generateKanaQuestion();
+return;
+}
+
+const unitKey = quizUnitSelect.value;
+const pool = getPool(unitKey);
+if (unitKey === "wrongbook" && pool.length === 0) {
+alert("錯題本目前是空的，先做其他單元累積錯題吧！");
+return;
+}
+if (pool.length < 2) {
+alert("此單元資料不足以出題（至少需要 2 個單字）。");
+return;
+}
+
+quizCard.style.display = "block";
+quizFeedbackEl.textContent = "";
+quizFeedbackEl.className = "quiz-feedback";
+quizOptionsEl.innerHTML = "";
+
+const shuffled = shuffle(pool);
+const correctItem = shuffled[0];
+const distractors = shuffled.slice(1, 4);
+const options = shuffle([correctItem, ...distractors]);
+
+currentQuestionItem = correctItem;
+currentAnswerIndex = options.indexOf(correctItem);
+
+quizCount++;
+quizCountEl.textContent = quizCount;
+updateProgress();
+
+const isKanaUnit = (unitKey === "Hirakana" || unitKey === "Katakana");
+const rowHint = isKanaUnit && correctItem.row ? ` · 提示：${correctItem.row}` : "";
+const jpDisplay = correctItem.jp_kanji || correctItem.jp;
+
+// ===== 聽力測驗：永遠是「聽假名」，選對應的東西（平假名／片假名單元 → 選假名；其他單元 → 選中文） =====
+if (quizMode === "listening") {
+quizPlayAudioWrap.style.display = "block";
+quizSpeakBtn.onclick = () => speakJapanese(correctItem.jp);
+speakJapanese(correctItem.jp);
+
+if (isKanaUnit) {
+// 平假名／片假名：聽假名 → 選假名
+quizLabel.textContent = "聽力測驗：請選出正確的假名" + rowHint;
+quizQuestion.textContent = "請先聽讀音，再選出正確的假名。";
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+btn.textContent = item.jp;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+} else {
+// 其他單元：聽日文 → 選中文
+quizLabel.textContent = "聽力測驗：請選出正確的中文意思";
+quizQuestion.textContent = `提示（日文）：${jpDisplay}`;
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+btn.textContent = item.zh;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+}
+return;
+}
+
+// ===== 單字測驗（meaning）：平／片假名 vs 其他單元不一樣 =====
+quizPlayAudioWrap.style.display = "none";
+
+if (isKanaUnit) {
+// 平假名／片假名：提示＝讀音，選項＝假名（和你之前要求一致）
+quizLabel.textContent = "單字測驗：請選出正確的假名" + rowHint;
+quizQuestion.textContent = `提示：讀音 ${correctItem.romaji}`;
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+btn.textContent = item.jp;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+} else {
+// 其他單元：隨機方向：中文→日文 或 日文→中文
+const direction = Math.random() < 0.5 ? "zh-to-jp" : "jp-to-zh";
+
+if (direction === "zh-to-jp") {
+// 提示中文 → 選日文
+quizLabel.textContent = "單字測驗：請選出對應的日文";
+quizQuestion.textContent = `提示（中文）：${correctItem.zh}`;
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+const disp = item.jp_kanji || item.jp;
+btn.textContent = disp;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+} else {
+// 提示日文 → 選中文
+quizLabel.textContent = "單字測驗：請選出正確的中文意思";
+quizQuestion.textContent = `提示（日文）：${jpDisplay}`;
+
+options.forEach((item, idx) => {
+const btn = document.createElement("button");
+btn.className = "quiz-option";
+btn.textContent = item.zh;
+btn.addEventListener("click", () => handleAnswer(idx));
+quizOptionsEl.appendChild(btn);
+});
+}
+}
+}
+
+function handleAnswer(index) {
+const optionButtons = quizOptionsEl.querySelectorAll(".quiz-option");
+optionButtons.forEach((btn, i) => {
+btn.disabled = true;
+if (i === currentAnswerIndex) {
+btn.classList.add("correct");
+}
+});
+
+const unitKey = quizUnitSelect.value;
+const jpDisplay = currentQuestionItem.jp_kanji || currentQuestionItem.jp;
+
+if (index === currentAnswerIndex) {
+quizScore++;
+quizScoreEl.textContent = quizScore;
+let msg = "✅ 答對了！";
+
+// 錯題本補強模式：在錯題本單元答對，就把該題移除
+if (unitKey === "wrongbook") {
+removeFromWrongBook(currentQuestionItem);
+if (currentUnit === "wrongbook") {
+renderUnit("wrongbook");
+}
+msg += "（此題已從錯題本移除）";
+}
+
+quizFeedbackEl.textContent = msg;
+quizFeedbackEl.classList.add("correct");
+} else {
+optionButtons[index].classList.add("incorrect");
+quizFeedbackEl.textContent =
+`❌ 答錯了。正確答案是：${jpDisplay}（${currentQuestionItem.romaji}），意思是「${currentQuestionItem.zh}」。`;
+quizFeedbackEl.classList.add("incorrect");
+
+addToWrongBook(currentQuestionItem);
+if (currentUnit === "wrongbook") {
+renderUnit("wrongbook");
+}
+}
+
+if (autoNextCheckbox.checked) {
+setTimeout(() => {
+generateQuestion();
+}, 900);
+}
+}
+
+startQuizBtn.addEventListener("click", () => {
+generateQuestion();
+});
+});
+</script>
+</body>
+</html>
