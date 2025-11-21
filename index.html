@@ -840,13 +840,38 @@ const speechWarningEl = document.getElementById("speech-warning");
 if (!speechSupported) {
 speechWarningEl.style.display = "block";
 }
+// iOS Safari：必須等 voices 載入，否則 getVoices() 會是空陣列
+if ("speechSynthesis" in window) {
+window.speechSynthesis.onvoiceschanged = () => {
+console.log("voices loaded");
+};
+}
 function speakJapanese(text) {
 if (!speechSupported) return;
+
+// iOS 常常第一次沒聲音，先取消再播
 window.speechSynthesis.cancel();
+
 const utter = new SpeechSynthesisUtterance(text);
+
+// 取得所有可用語音
+const voices = window.speechSynthesis.getVoices() || [];
+
+// 優先找日文語音（iOS 上通常會叫 Kyoko / O-renji / Nozomi 等）
+const jpVoice =
+voices.find(v => v.lang && v.lang.toLowerCase().includes("ja")) ||
+voices.find(v => v.name && v.name.toLowerCase().includes("kyoko")) ||
+voices.find(v => v.name && v.name.toLowerCase().includes("o-renji")) ||
+null;
+
+if (jpVoice) {
+utter.voice = jpVoice;
+}
+
 utter.lang = "ja-JP";
 utter.rate = 1.0;
 utter.pitch = 1.0;
+
 window.speechSynthesis.speak(utter);
 }
 
